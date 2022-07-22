@@ -106,7 +106,7 @@ class Model:
         print("Compiling model...")
         self.opt_name = optimizer
         loss_fn = losses_module.get(loss)
-        self.losshistory.set_loss_weights(loss_weights)
+        self.losshistory.set_loss_weights(loss_weights)  # 即 self.losshistory.loss_weights = loss_weights
         if external_trainable_variables is None:
             self.external_trainable_variables = []
         else:
@@ -298,7 +298,7 @@ class Model:
         # but not all optimizers (such as L-BFGS) support this.
         trainable_variables = (
             list(self.net.parameters()) + self.external_trainable_variables
-        )
+        )   # 可学变量
         if self.net.regularizer is None:
             self.opt, self.lr_scheduler = optimizers.get(
                 trainable_variables, self.opt_name, learning_rate=lr, decay=decay

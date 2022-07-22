@@ -6,7 +6,7 @@ from .. import activations
 
 
 class DeepONetCartesianProd(NN):
-    """Deep operator network for dataset in the format of Cartesian product.
+    """Deep operator network for dataset in the format of Cartesian product. 笛卡尔乘积格式数据集的深度算子网络，什么鬼
 
     Args:
         layer_sizes_branch: A list of integers as the width of a fully connected network,

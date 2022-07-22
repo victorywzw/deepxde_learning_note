@@ -6,9 +6,11 @@ from .. import initializers
 from ... import config
 
 
+# 一个比较正常的全连接网络结构
 class FNN(NN):
     """Fully-connected neural network."""
 
+    # 层数列表、激活函数、初始化方式
     def __init__(self, layer_sizes, activation, kernel_initializer):
         super().__init__()
         self.activation = activations.get(activation)
@@ -22,6 +24,8 @@ class FNN(NN):
                     layer_sizes[i - 1], layer_sizes[i], dtype=config.real(torch)
                 )
             )
+
+            # 对每层进行初始化，b使用0初始化
             initializer(self.linears[-1].weight)
             initializer_zero(self.linears[-1].bias)
 
@@ -36,7 +40,7 @@ class FNN(NN):
             x = self._output_transform(inputs, x)
         return x
 
-
+# 多个区块的DNN，好像是每个区块负责一个output
 class PFNN(NN):
     """Parallel fully-connected network that uses independent sub-networks for each
     network output.
@@ -63,7 +67,7 @@ class PFNN(NN):
         if not isinstance(layer_sizes[-1], int):
             raise ValueError("output size must be integer")
 
-        n_output = layer_sizes[-1]
+        n_output = layer_sizes[-1]  # 输出维度
 
         def make_linear(n_input, n_output):
             linear = torch.nn.Linear(n_input, n_output, config.real(torch))
@@ -73,14 +77,14 @@ class PFNN(NN):
 
         self.layers = torch.nn.ModuleList()
         for i in range(1, len(layer_sizes) - 1):
-            prev_layer_size = layer_sizes[i - 1]
-            curr_layer_size = layer_sizes[i]
+            prev_layer_size = layer_sizes[i - 1]  # 每个区块L-1层的宽度
+            curr_layer_size = layer_sizes[i]      # 每个区块L层的宽度
             if isinstance(curr_layer_size, (list, tuple)):
                 if len(curr_layer_size) != n_output:
                     raise ValueError(
                         "number of sub-layers should equal number of network outputs"
                     )
-                if isinstance(prev_layer_size, (list, tuple)):
+                if isinstance(prev_layer_size, (list, tuple)):  # 判断是否为列表或元组
                     # e.g. [8, 8, 8] -> [16, 16, 16]
                     self.layers.append(
                         torch.nn.ModuleList(
@@ -132,7 +136,7 @@ class PFNN(NN):
 
         # output layers
         if isinstance(x, list):
-            x = torch.cat([f(x_) for f, x_ in zip(self.layers[-1], x)], dim=1)
+            x = torch.cat([f(x_) for f, x_ in zip(self.layers[-1], x)], dim=1)  # 按维度进行拼接
         else:
             x = self.layers[-1](x)
 

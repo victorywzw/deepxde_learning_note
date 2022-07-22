@@ -48,7 +48,7 @@ class VarianceScalingStacked:
             raise ValueError("`scale` must be positive float.")
         if mode not in {"fan_in", "fan_out", "fan_avg"}:
             raise ValueError("Invalid `mode` argument:", mode)
-        distribution = distribution.lower()
+        distribution = distribution.lower()  # 大写字符转化为小写字符
         if distribution not in {
             "normal",
             "uniform",
@@ -62,7 +62,7 @@ class VarianceScalingStacked:
         self.seed = seed
         self.dtype = config.real(tf)
 
-    def __call__(self, shape, dtype=None):
+    def __call__(self, shape, dtype=None):  # 使类对象变为可调用对象
         if dtype is None:
             dtype = self.dtype
         scale = self.scale

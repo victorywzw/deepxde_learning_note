@@ -4,6 +4,7 @@ import os
 
 
 def set_default_backend(backend_name):
+    # 在Windows平台上，如果已设置，则将初始〜替换为HOME和USERPROFILE环境变量的值。否则，将使用HOMEPATH和HOMEDRIVE环境变量
     default_dir = os.path.join(os.path.expanduser("~"), ".deepxde")
     if not os.path.exists(default_dir):
         os.makedirs(default_dir)
@@ -20,6 +21,7 @@ def set_default_backend(backend_name):
 
 
 if __name__ == "__main__":
+    # 命令行参数，调用时可以用 python set_default_backend.py pytorch 来设置框架
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "backend",

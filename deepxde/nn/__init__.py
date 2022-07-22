@@ -29,12 +29,12 @@ if os.environ.get("READTHEDOCS") == "True":
     from . import tensorflow
     from . import tensorflow_compat_v1
 
-
+# 以‘_’开头的函数不会被import *调用
 def _load_backend(mod_name):
-    mod = importlib.import_module(".%s" % mod_name, __name__)
+    mod = importlib.import_module(".%s" % mod_name, __name__)  # 相对导入 从__name__中导入__name__.mod_name
     thismod = sys.modules[__name__]
     for api, obj in mod.__dict__.items():
-        setattr(thismod, api, obj)
+        setattr(thismod, api, obj)  # 用于设置属性值，该属性不一定是存在的 setattr(object, name, value)
 
 
 _load_backend(backend_name.replace(".", "_"))

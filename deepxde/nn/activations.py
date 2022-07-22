@@ -45,7 +45,7 @@ def get(identifier):
         return linear
     if isinstance(identifier, str):
         if identifier.startswith("LAAF"):
-            identifier = identifier.split()
+            identifier = identifier.split()  # 默认以空格为分隔符
             n = float(identifier[0].split("-")[1])
             return layer_wise_locally_adaptive(get(identifier[1]), n=n)
         return {
@@ -58,8 +58,8 @@ def get(identifier):
             "swish": bkd.silu,
             "tanh": bkd.tanh,
         }[identifier]
-    if callable(identifier):
-        return identifier
+    if callable(identifier):  # callable() 函数用于检查一个对象是否是可调用的
+        return identifier  # 但为何要如此返回？后续不会报错吗？
     raise TypeError(
         "Could not interpret activation function identifier: {}".format(identifier)
     )

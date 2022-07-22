@@ -1,6 +1,8 @@
 import torch
 
-
+'''
+    额外定义了 1. 输入输出的transform 2. 可训练参数的数目
+'''
 class NN(torch.nn.Module):
     """Base class for all neural network modules."""
 

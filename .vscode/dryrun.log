@@ -1,0 +1,6 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/mnt/c/Users/13006/Desktop/deepxde'
+make: Leaving directory '/mnt/c/Users/13006/Desktop/deepxde'
+ 
+make: *** No targets specified and no makefile found.  Stop.
+
